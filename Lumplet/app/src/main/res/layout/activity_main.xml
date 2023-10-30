@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="16dp"
+    android:background="#FFFFFF">
+
+    <!-- Nagłówek z napisem "Lumplet" -->
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginBottom="16dp"
+        android:text="Lumplet"
+        android:textSize="35sp" />
+
+    <!-- Kategoria "Obuwie" -->
+    <Button
+        android:id="@+id/snkrsBut"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
+        android:background="#3498db"
+        android:text="Obuwie"
+        android:textColor="#ffffff" />
+
+    <!-- Kategoria "Ubrania" -->
+    <Button
+        android:id="@+id/clothesBut"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
+        android:background="#2ecc71"
+        android:text="Ubrania"
+        android:textColor="#ffffff" />
+
+    <!-- Kategoria "Akcesoria" -->
+    <Button
+        android:id="@+id/accessBut"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#f1c40f"
+        android:text="Akcesoria"
+        android:textColor="#ffffff" />
+</LinearLayout>
