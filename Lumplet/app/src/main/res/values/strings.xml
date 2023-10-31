@@ -1,4 +1,8 @@
 <resources>
     <string name="app_name">Lumplet</string>
     <string name="logo_outletu_lumplet">Logo outletu Lumplet</string>
+    <string name="opis_produktu">Opis Produktu</string>
+    <string name="cena_0_00">Cena: $0.00</string>
+    <string name="kategoria_produkt">Kategoria: Produkt</string>
+    <string name="dodaj_do_koszyka">Dodaj do koszyka</string>
 </resources>

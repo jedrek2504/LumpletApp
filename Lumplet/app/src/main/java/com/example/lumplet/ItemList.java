@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -15,10 +16,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+import android.content.Intent;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
 
 public class ItemList extends AppCompatActivity {
 
@@ -27,7 +27,7 @@ public class ItemList extends AppCompatActivity {
     TextView kategoriaTextView;
     private final ArrayList<Item> snkrsList = new ArrayList<>();
     private final ArrayList<Item> clothesList = new ArrayList<>();
-    private final ArrayList<Item> accessoriesList = new ArrayList();
+    private final ArrayList<Item> accessoriesList = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,6 +36,24 @@ public class ItemList extends AppCompatActivity {
         kategoriaTextView = findViewById(R.id.kategoriaTextView);
         db = FirebaseFirestore.getInstance();
         listView = findViewById(R.id.listView);
+
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                // Pobierz wybrany produkt z listy na podstawie pozycji
+                Item selectedItem = (Item) listView.getItemAtPosition(position);
+
+                // Przejdź do widoku produktu (ProductViewActivity)
+                Intent productViewIntent = new Intent(ItemList.this, ProductView.class);
+                productViewIntent.putExtra("productName", selectedItem.getName());
+                productViewIntent.putExtra("productDescription", selectedItem.getDescription());
+                productViewIntent.putExtra("productPrice", selectedItem.getPrice());
+                productViewIntent.putExtra("productCategory", selectedItem.getCategory());
+                // Tutaj możesz przekazać więcej informacji, takie jak zdjęcia, jeśli potrzebujesz
+
+                startActivity(productViewIntent);
+            }
+        });
 
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
@@ -49,6 +67,10 @@ public class ItemList extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
+
+        snkrsList.clear();
+        clothesList.clear();
+        accessoriesList.clear();
 
         db.collection("items")
                 .get()
