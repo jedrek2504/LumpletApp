@@ -10,14 +10,14 @@ import android.widget.ImageView;
 import com.google.firebase.auth.FirebaseAuth;
 
 public class MainActivity extends AppCompatActivity {
-    private Authentication auth;
+//    private Authentication auth;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        // Inicjalizacja klasy Authentication
-        auth = new Authentication(this);
+//        // Inicjalizacja klasy Authentication
+//        auth = new Authentication(this);
 
 //        // Sprawdzanie na startupie aplikacji czy użytkownik jest zalogowany
 //        if (auth.getCurrentUser() == null) {

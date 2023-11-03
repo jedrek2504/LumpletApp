@@ -1,13 +1,20 @@
 package com.example.lumplet;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.widget.EditText;
 import android.widget.Button;
 import android.widget.Toast;
 
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+import com.google.android.gms.common.api.ApiException;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseUser;
 
 public class LoginActivity extends AppCompatActivity {
@@ -16,6 +23,8 @@ public class LoginActivity extends AppCompatActivity {
     private EditText passwordEditText;
     private Button loginButton;
     private Button registerButton;
+
+    private Button googleLoginButton;
 
     private Authentication auth;
 
@@ -30,6 +39,7 @@ public class LoginActivity extends AppCompatActivity {
         passwordEditText = findViewById(R.id.passwordEditText);
         loginButton = findViewById(R.id.loginButton);
         registerButton = findViewById(R.id.registerButton);
+        googleLoginButton = findViewById(R.id.googleLoginButton);
 
         loginButton.setOnClickListener(view -> {
             String email = emailEditText.getText().toString().trim();
@@ -82,5 +92,43 @@ public class LoginActivity extends AppCompatActivity {
                 }
             });
         });
+
+        googleLoginButton.setOnClickListener(view -> signInWithGoogle());
+    }
+
+    private void signInWithGoogle() {
+        Intent signInIntent = auth.getGoogleSignInClient().getSignInIntent();
+        googleSignInLauncher.launch(signInIntent);
+    }
+
+    private final ActivityResultLauncher<Intent> googleSignInLauncher = registerForActivityResult(
+            new ActivityResultContracts.StartActivityForResult(),
+            result -> {
+                if (result.getResultCode() == Activity.RESULT_OK) {
+                    Intent intent = result.getData();
+                    handleSignInResult(intent);
+                }
+            }
+    );
+
+    private void handleSignInResult(Intent data) {
+        Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
+        try {
+            GoogleSignInAccount account = task.getResult(ApiException.class);
+            auth.firebaseAuthWithGoogle(account, new Authentication.FirebaseAuthCompleteListener() {
+                @Override
+                public void onComplete(FirebaseUser user) {
+                    startActivity(new Intent(LoginActivity.this, MainActivity.class));
+                    finish();
+                }
+
+                @Override
+                public void onError(Exception exception) {
+                    Toast.makeText(LoginActivity.this, "Błąd logowania przez Google: " + exception.getMessage(), Toast.LENGTH_SHORT).show();
+                }
+            });
+        } catch (ApiException e) {
+            Toast.makeText(LoginActivity.this, "Błąd logowania przez Google: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+        }
     }
 }
