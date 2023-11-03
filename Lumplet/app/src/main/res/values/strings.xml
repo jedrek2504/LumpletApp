@@ -10,4 +10,5 @@
     <string name="login">Zaloguj się</string>
     <string name="register">Zarejestruj się</string>
     <string name="description_icon_user">Login</string>
+    <string name="google_login">Zaloguj przez Google</string>
 </resources>

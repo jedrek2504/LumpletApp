@@ -17,7 +17,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         // Inicjalizacja klasy Authentication
-        auth = new Authentication();
+        auth = new Authentication(this);
 
 //        // Sprawdzanie na startupie aplikacji czy użytkownik jest zalogowany
 //        if (auth.getCurrentUser() == null) {

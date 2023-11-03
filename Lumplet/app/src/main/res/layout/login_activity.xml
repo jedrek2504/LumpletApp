@@ -52,4 +52,15 @@
         android:layout_marginEnd="16dp"
         android:text="@string/register"/>
 
+    <!-- Google Login button -->
+    <Button
+        android:id="@+id/googleLoginButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/registerButton"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        android:text="@string/google_login"/>
+
 </RelativeLayout>
