@@ -5,4 +5,10 @@
     <string name="cena_0_00">Cena: $0.00</string>
     <string name="kategoria_produkt">Kategoria: Produkt</string>
     <string name="dodaj_do_koszyka">Dodaj do koszyka</string>
+    <string name="email">E-mail</string>
+    <string name="password">Hasło</string>
+    <string name="login">Zaloguj się</string>
+    <string name="register">Zarejestruj się</string>
+    <string name="description_icon_user">Login</string>
+    <string name="google_login">Zaloguj przez Google</string>
 </resources>

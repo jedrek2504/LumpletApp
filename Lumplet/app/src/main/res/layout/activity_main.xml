@@ -1,51 +1,81 @@
-<?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:padding="16dp"
-    android:background="#FFFFFF">
+    android:background="#FFFFFF"
+    android:padding="16dp">
 
-    <!-- Nagłówek z napisem "Lumplet" -->
     <ImageView
         android:id="@+id/mainLogo1"
         android:layout_width="141dp"
         android:layout_height="137dp"
-        android:layout_gravity="center"
-        android:layout_marginBottom="16dp"
+        android:layout_marginTop="16dp"
         android:contentDescription="@string/logo_outletu_lumplet"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/iconUser"
         app:srcCompat="@drawable/lumpletlogo" />
 
-
-
-    <!-- Kategoria "Obuwie" -->
-    <Button
-        android:id="@+id/snkrsBut"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="16dp"
-        android:background="#3498db"
-        android:text="Obuwie"
-        android:textColor="#ffffff" />
-
-    <!-- Kategoria "Ubrania" -->
     <Button
         android:id="@+id/clothesBut"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="16dp"
+        android:layout_marginTop="8dp"
         android:background="#2ecc71"
         android:text="Ubrania"
-        android:textColor="#ffffff" />
+        android:textColor="#ffffff"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/snkrsBut" />
 
-    <!-- Kategoria "Akcesoria" -->
     <Button
         android:id="@+id/accessBut"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
         android:background="#f1c40f"
         android:text="Akcesoria"
-        android:textColor="#ffffff" />
-</LinearLayout>
+        android:textColor="#ffffff"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/clothesBut" />
+
+    <TextView
+        android:id="@+id/userEmail"
+        android:layout_width="268dp"
+        android:layout_height="33dp"
+        android:textAlignment="center"
+        android:textSize="12sp"
+        app:autoSizeTextType="uniform"
+        app:layout_constraintBottom_toBottomOf="@id/iconUser"
+        app:layout_constraintEnd_toStartOf="@id/iconUser"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@id/iconUser"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <ImageView
+        android:id="@+id/iconUser"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_marginTop="56dp"
+        android:layout_marginEnd="16dp"
+        android:contentDescription="@string/description_icon_user"
+        android:src="@drawable/ic_user_icon"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/snkrsBut"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        android:background="#3498db"
+        android:text="Obuwie"
+        android:textColor="#ffffff"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/mainLogo1" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

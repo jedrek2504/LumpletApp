@@ -32,6 +32,8 @@
         <activity
             android:name=".ItemList">
         </activity>
+        <!-- Dodaj deklarację aktywności LoginActivity -->
+        <activity android:name=".LoginActivity" />
     </application>
 
 </manifest>
