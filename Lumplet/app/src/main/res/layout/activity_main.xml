@@ -18,9 +18,18 @@
         android:contentDescription="@string/logo_outletu_lumplet"
         app:srcCompat="@drawable/lumpletlogo" />
 
-
+    <!-- Ikona ludzika w prawym górnym rogu -->
+    <ImageView
+        android:id="@+id/iconUser"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:contentDescription="@string/description_icon_user"
+        android:src="@drawable/ic_user_icon" />
 
     <!-- Kategoria "Obuwie" -->
+
     <Button
         android:id="@+id/snkrsBut"
         android:layout_width="match_parent"

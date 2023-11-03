@@ -5,6 +5,8 @@ import android.content.Intent; // Dodaj import
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
+
 import com.google.firebase.auth.FirebaseAuth;
 
 public class MainActivity extends AppCompatActivity {
@@ -17,13 +19,13 @@ public class MainActivity extends AppCompatActivity {
         // Inicjalizacja klasy Authentication
         auth = new Authentication();
 
-        // Możesz sprawdzić, czy użytkownik jest zalogowany, i podjąć odpowiednie działania
-        if (auth.getCurrentUser() == null) {
-            // Użytkownik nie jest zalogowany, przekieruj do ekranu logowania
-            startActivity(new Intent(this, LoginActivity.class));
-            finish();
-            return;
-        }
+//        // Sprawdzanie na startupie aplikacji czy użytkownik jest zalogowany
+//        if (auth.getCurrentUser() == null) {
+//            // Użytkownik nie jest zalogowany, przekieruj do ekranu logowania
+//            startActivity(new Intent(this, LoginActivity.class));
+//            finish();
+//            return;
+//        }
 
         Button snkrsButton = findViewById(R.id.snkrsBut);
         Button clothesButton = findViewById(R.id.clothesBut);
@@ -57,6 +59,14 @@ public class MainActivity extends AppCompatActivity {
             Bundle extras = new Bundle();
             extras.putString("kategoria", "Akcesoria");
             intent.putExtras(extras);
+            startActivity(intent);
+        });
+
+        ImageView iconUser = findViewById(R.id.iconUser);
+        iconUser.setOnClickListener(view -> {
+            // Obsługa kliknięcia logo "ludzika"
+            // Przekierowanie do sceny "login_activity.xml" (LoginActivity)
+            Intent intent = new Intent(MainActivity.this, LoginActivity.class);
             startActivity(intent);
         });
     }
