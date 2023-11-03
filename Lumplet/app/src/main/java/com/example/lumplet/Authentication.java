@@ -13,9 +13,13 @@ import com.google.firebase.auth.GoogleAuthProvider;
 
 public class Authentication {
 
+    // Klient do logowania przez Google
     private GoogleSignInClient mGoogleSignInClient;
+
+    // Klient do autentykacji Firebase
     private FirebaseAuth mAuth;
 
+    // Konstruktor inicjalizujący klienta do logowania przez Google oraz autentykacji Firebase
     public Authentication(Context context) {
         mAuth = FirebaseAuth.getInstance();
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
@@ -25,10 +29,12 @@ public class Authentication {
         mGoogleSignInClient = GoogleSignIn.getClient(context, gso);
     }
 
+    // Pobranie aktualnie zalogowanego użytkownika
     public FirebaseUser getCurrentUser() {
         return mAuth.getCurrentUser();
     }
 
+    // Rejestracja nowego użytkownika za pomocą e-maila i hasła
     public void signUp(String email, String password, FirebaseAuthCompleteListener listener) {
         mAuth.createUserWithEmailAndPassword(email, password)
                 .addOnCompleteListener(task -> {
@@ -36,12 +42,13 @@ public class Authentication {
                         // Rejestracja się powiodła
                         listener.onComplete(task.getResult().getUser());
                     } else {
-                        // Wystąpił błąd
+                        // Wystąpił błąd podczas rejestracji
                         listener.onError(task.getException());
                     }
                 });
     }
 
+    // Logowanie użytkownika za pomocą e-maila i hasła
     public void signIn(String email, String password, FirebaseAuthCompleteListener listener) {
         mAuth.signInWithEmailAndPassword(email, password)
                 .addOnCompleteListener(task -> {
@@ -49,34 +56,40 @@ public class Authentication {
                         // Logowanie się powiodło
                         listener.onComplete(task.getResult().getUser());
                     } else {
-                        // Wystąpił błąd
+                        // Wystąpił błąd podczas logowania
                         listener.onError(task.getException());
                     }
                 });
     }
 
+    // Pobranie klienta do logowania przez Google
     public GoogleSignInClient getGoogleSignInClient() {
         return mGoogleSignInClient;
     }
 
+    // Logowanie użytkownika przez Google z wykorzystaniem tokena od Google
     public void firebaseAuthWithGoogle(GoogleSignInAccount acct, FirebaseAuthCompleteListener listener) {
         AuthCredential credential = GoogleAuthProvider.getCredential(acct.getIdToken(), null);
         mAuth.signInWithCredential(credential)
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
+                        // Logowanie przez Google się powiodło
                         listener.onComplete(mAuth.getCurrentUser());
                     } else {
+                        // Wystąpił błąd podczas logowania przez Google
                         listener.onError(task.getException());
                     }
                 });
     }
 
+    // Wylogowywanie użytkownika
     public void signOut() {
         mAuth.signOut();
     }
 
+    // Interfejs do obsługi wyników operacji autentykacji
     public interface FirebaseAuthCompleteListener {
-        void onComplete(FirebaseUser user);
-        void onError(Exception exception);
+        void onComplete(FirebaseUser user);       // Metoda wywoływana po pomyślnej operacji
+        void onError(Exception exception);       // Metoda wywoływana w przypadku wystąpienia błędu
     }
 }
