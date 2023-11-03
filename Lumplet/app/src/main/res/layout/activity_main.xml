@@ -20,6 +20,13 @@
         android:contentDescription="@string/description_icon_user"
         android:src="@drawable/ic_user_icon" />
 
+    <TextView
+        android:id="@+id/userEmail"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        android:textAlignment="center" />
+
     <ImageView
         android:id="@+id/mainLogo1"
         android:layout_width="141dp"
@@ -57,4 +64,5 @@
         android:background="#f1c40f"
         android:text="Akcesoria"
         android:textColor="#ffffff" />
+
 </LinearLayout>

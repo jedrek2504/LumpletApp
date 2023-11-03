@@ -6,31 +6,35 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
 
 public class MainActivity extends AppCompatActivity {
-//    private Authentication auth;
+    private Authentication auth;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-//        // Inicjalizacja klasy Authentication
-//        auth = new Authentication(this);
-
-//        // Sprawdzanie na startupie aplikacji czy użytkownik jest zalogowany
-//        if (auth.getCurrentUser() == null) {
-//            // Użytkownik nie jest zalogowany, przekieruj do ekranu logowania
-//            startActivity(new Intent(this, LoginActivity.class));
-//            finish();
-//            return;
-//        }
+        // Inicjalizacja klasy Authentication
+        auth = new Authentication(this);
 
         Button snkrsButton = findViewById(R.id.snkrsBut);
         Button clothesButton = findViewById(R.id.clothesBut);
         Button accessButton = findViewById(R.id.accessBut);
+        ImageView iconUser = findViewById(R.id.iconUser);
+        TextView userEmail = findViewById(R.id.userEmail);
 
+        // Jeśli użytkownik nie jest zalogowany wyświetl ikone do logowania
+        if (auth.getCurrentUser() == null) {
+            iconUser.setVisibility(View.VISIBLE);
+            userEmail.setVisibility(View.GONE);
+        } else {
+            iconUser.setVisibility(View.GONE);
+            userEmail.setVisibility(View.VISIBLE);
+            userEmail.setText(auth.getCurrentUser().getEmail());
+        }
 
         snkrsButton.setOnClickListener(view -> {
             // Obsługa kliknięcia przycisku "Obuwie"
@@ -62,7 +66,6 @@ public class MainActivity extends AppCompatActivity {
             startActivity(intent);
         });
 
-        ImageView iconUser = findViewById(R.id.iconUser);
         iconUser.setOnClickListener(view -> {
             // Obsługa kliknięcia logo "ludzika"
             // Przekierowanie do sceny "login_activity.xml" (LoginActivity)
