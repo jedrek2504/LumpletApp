@@ -29,9 +29,9 @@ public class MainActivity extends AppCompatActivity {
         // Jeśli użytkownik nie jest zalogowany wyświetl ikone do logowania
         if (auth.getCurrentUser() == null) {
             iconUser.setVisibility(View.VISIBLE);
-            userEmail.setVisibility(View.GONE);
+            userEmail.setVisibility(View.INVISIBLE);
         } else {
-            iconUser.setVisibility(View.GONE);
+            iconUser.setVisibility(View.INVISIBLE);
             userEmail.setVisibility(View.VISIBLE);
             userEmail.setText(auth.getCurrentUser().getEmail());
         }
