@@ -45,6 +45,7 @@ public class ItemList extends AppCompatActivity {
 
                 // Przejdź do widoku produktu (ProductViewActivity)
                 Intent productViewIntent = new Intent(ItemList.this, ProductView.class);
+                productViewIntent.putExtra("itemID", selectedItem.getItemId());
                 productViewIntent.putExtra("productName", selectedItem.getName());
                 productViewIntent.putExtra("productDescription", selectedItem.getDescription());
                 productViewIntent.putExtra("productPrice", selectedItem.getPrice());
@@ -77,18 +78,19 @@ public class ItemList extends AppCompatActivity {
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
                         for (QueryDocumentSnapshot document : task.getResult()) {
+                            String id = document.getId(); // Capture the Firestore document ID
                             String name = document.getString("name");
                             double price = document.getDouble("price");
                             String category = document.getString("category");
                             String description = document.getString("description");
 
-                            Item item = new Item(name, price, category, description);
+                            Item item = new Item(id, name, price, category, description); // Use the constructor that includes the ID
                             if (category != null) {
                                 switch (category) {
                                     case "sneakers":
                                         snkrsList.add(item);
                                         break;
-                                    case "cloth":
+                                    case "clothing":
                                         clothesList.add(item);
                                         break;
                                     case "accessory":

@@ -25,13 +25,14 @@ public class ProductView extends AppCompatActivity {
         // Pobierz dane produktu z Intent
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
+            String itemId = extras.getString("itemID");
             String productName = extras.getString("productName");
             String productDescription = extras.getString("productDescription");
             double productPrice = extras.getDouble("productPrice");
             String productCategory = extras.getString("productCategory");
             // Możesz dodać kod do pobrania zdjęcia produktu, jeśli go używasz
 
-            currentItem = new Item(productName, productPrice, productCategory, productDescription);
+            currentItem = new Item(itemId, productName, productPrice, productCategory, productDescription);
 
             // Znajdź widoki w układzie XML
             TextView nameTextView = findViewById(R.id.productNameTextView);
