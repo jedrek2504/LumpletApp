@@ -1,5 +1,7 @@
 package com.example.lumplet;
 
+import androidx.annotation.NonNull;
+
 public class Item {
     private String name;
     private double price;
@@ -43,5 +45,11 @@ public class Item {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    // Nadpisanie toString aby produkty były poprawnie wyświetlane w koszyku
+    @Override
+    public String toString() {
+        return getName() + " - " + String.format("$%.2f", getPrice());
     }
 }

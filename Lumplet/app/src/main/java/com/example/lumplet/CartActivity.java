@@ -9,14 +9,10 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import java.util.ArrayList;
+import java.util.List;
 
 public class CartActivity extends AppCompatActivity {
 
-    private ListView cartItemsList;
-    private TextView totalPrice;
-    private Button proceedToCheckout;
-    private ArrayList<Item> cartItems = new ArrayList<>();
     private double totalCartValue = 0.0;
 
     @Override
@@ -24,14 +20,12 @@ public class CartActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.cart_activity);
 
-        cartItemsList = findViewById(R.id.cartItemsList);
-        totalPrice = findViewById(R.id.totalPrice);
-        proceedToCheckout = findViewById(R.id.proceedToCheckout);
+        ListView cartItemsList = findViewById(R.id.cartItemsList);
+        TextView totalPrice = findViewById(R.id.totalPrice);
+        Button proceedToCheckout = findViewById(R.id.proceedToCheckout);
 
-        // This is where you would ideally retrieve the cart items from a cart management system or from an intent
-        // For the sake of this example, we're just initializing the cart with a few items.
-        // In a real application, you would remove this and initialize your cart from saved state or a database.
-        initializeCartWithDummyData();
+        // Fetch the items from the Cart singleton
+        List<Item> cartItems = Cart.getInstance().getItems();
 
         ArrayAdapter<Item> itemsAdapter = new ArrayAdapter<>(
                 this,
@@ -42,7 +36,7 @@ public class CartActivity extends AppCompatActivity {
         cartItemsList.setAdapter(itemsAdapter);
 
         // Calculate total price and display
-        calculateTotal();
+        calculateTotal(cartItems);
         totalPrice.setText(String.format("Total: $%.2f", totalCartValue));
 
         proceedToCheckout.setOnClickListener(new View.OnClickListener() {
@@ -53,18 +47,10 @@ public class CartActivity extends AppCompatActivity {
         });
     }
 
-    private void calculateTotal() {
+    private void calculateTotal(List<Item> items) {
         totalCartValue = 0.0;
-        for (Item item : cartItems) {
+        for (Item item : items) {
             totalCartValue += item.getPrice();
         }
-    }
-
-    private void initializeCartWithDummyData() {
-        // Here we add dummy items to the cart, you should replace this with real cart management logic
-        cartItems.add(new Item("Sneakers", 59.99, "Footwear", "Comfortable running sneakers"));
-        cartItems.add(new Item("T-Shirt", 29.99, "Clothing", "Cotton graphic tee"));
-        // Update the total price whenever items are added to the cart
-        calculateTotal();
     }
 }
