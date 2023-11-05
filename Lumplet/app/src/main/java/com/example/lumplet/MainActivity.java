@@ -24,8 +24,10 @@ public class MainActivity extends AppCompatActivity {
         Button clothesButton = findViewById(R.id.clothesBut);
         Button accessButton = findViewById(R.id.accessBut);
         ImageView iconUser = findViewById(R.id.iconUser);
+        ImageView iconCart = findViewById(R.id.iconCart);
         TextView userEmail = findViewById(R.id.userEmail);
         Button logoutButton = findViewById(R.id.logoutBut);
+
 
 
         // Jeśli użytkownik nie jest zalogowany wyświetl ikone do logowania
@@ -33,11 +35,13 @@ public class MainActivity extends AppCompatActivity {
             iconUser.setVisibility(View.VISIBLE);
             userEmail.setVisibility(View.INVISIBLE);
             logoutButton.setVisibility(View.INVISIBLE);
+            iconCart.setVisibility(View.INVISIBLE);
         } else {
             iconUser.setVisibility(View.INVISIBLE);
             userEmail.setVisibility(View.VISIBLE);
-            userEmail.setText(auth.getCurrentUser().getEmail());
+            iconCart.setVisibility(View.VISIBLE);
             logoutButton.setVisibility(View.VISIBLE);
+            userEmail.setText(auth.getCurrentUser().getEmail());
         }
 
         snkrsButton.setOnClickListener(view -> {
@@ -89,5 +93,11 @@ public class MainActivity extends AppCompatActivity {
             finish();
         });
 
+        iconCart.setOnClickListener(view -> {
+            // Obsługa kliknięcia logo "koszyka"
+            // Przekierowanie do sceny "cart_activity.xml"
+            Intent intent = new Intent(MainActivity.this, CartActivity.class);
+            startActivity(intent);
+        });
     }
 }

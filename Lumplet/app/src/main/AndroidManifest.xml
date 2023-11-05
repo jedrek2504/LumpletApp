@@ -32,8 +32,12 @@
         <activity
             android:name=".ItemList">
         </activity>
+
         <!-- Dodaj deklarację aktywności LoginActivity -->
         <activity android:name=".LoginActivity" />
+
+        <!-- Dodaj deklarację aktywności CartActivity -->
+        <activity android:name=".CartActivity" />
     </application>
 
 </manifest>

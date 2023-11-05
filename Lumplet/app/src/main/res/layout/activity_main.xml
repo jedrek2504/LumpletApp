@@ -67,6 +67,16 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <ImageView
+        android:id="@+id/iconCart"
+        android:layout_width="45dp"
+        android:layout_height="34dp"
+        android:layout_marginStart="8dp"
+        android:contentDescription="@string/description_icon_user"
+        android:src="@drawable/ic_cart_icon"
+        app:layout_constraintStart_toEndOf="@+id/logoutBut"
+        tools:layout_editor_absoluteY="2dp" />
+
     <Button
         android:id="@+id/snkrsBut"
         android:layout_width="0dp"
@@ -89,7 +99,7 @@
         android:textSize="8sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toTopOf="@+id/userEmail"
-        tools:layout_editor_absoluteX="1dp"
-        tools:ignore="MissingConstraints" />
+        tools:ignore="MissingConstraints"
+        tools:layout_editor_absoluteX="1dp" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
