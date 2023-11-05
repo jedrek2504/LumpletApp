@@ -25,15 +25,19 @@ public class MainActivity extends AppCompatActivity {
         Button accessButton = findViewById(R.id.accessBut);
         ImageView iconUser = findViewById(R.id.iconUser);
         TextView userEmail = findViewById(R.id.userEmail);
+        Button logoutButton = findViewById(R.id.logoutBut);
+
 
         // Jeśli użytkownik nie jest zalogowany wyświetl ikone do logowania
         if (auth.getCurrentUser() == null) {
             iconUser.setVisibility(View.VISIBLE);
             userEmail.setVisibility(View.INVISIBLE);
+            logoutButton.setVisibility(View.INVISIBLE);
         } else {
             iconUser.setVisibility(View.INVISIBLE);
             userEmail.setVisibility(View.VISIBLE);
             userEmail.setText(auth.getCurrentUser().getEmail());
+            logoutButton.setVisibility(View.VISIBLE);
         }
 
         snkrsButton.setOnClickListener(view -> {
@@ -72,5 +76,18 @@ public class MainActivity extends AppCompatActivity {
             Intent intent = new Intent(MainActivity.this, LoginActivity.class);
             startActivity(intent);
         });
+
+        logoutButton.setOnClickListener(view -> {
+            // Obsługa kliknięcia przycisku "Wyloguj"
+            // Wylogowanie aktualnie zalogowanego użytkownika
+            auth.signOut();
+
+            // Zerowanie stosu aktywności i odświeżenie sceny
+            Intent refresh = new Intent(MainActivity.this, MainActivity.class);
+            refresh.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(refresh);
+            finish();
+        });
+
     }
 }
