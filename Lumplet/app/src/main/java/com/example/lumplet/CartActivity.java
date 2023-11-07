@@ -18,9 +18,9 @@ import java.util.List;
 
 public class CartActivity extends AppCompatActivity {
 
-    private double totalCartValue = 0.0;
-    private ArrayAdapter<Item> itemsAdapter; // Declare itemsAdapter as a field
-    private TextView totalPrice; // Declaration without initialization
+    private double totalCartValue = 0.0; // Całkowita wartość koszyka
+    private ArrayAdapter<Item> itemsAdapter;
+    private TextView totalPrice;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,12 +28,13 @@ public class CartActivity extends AppCompatActivity {
         setContentView(R.layout.cart_activity);
 
         ListView cartItemsList = findViewById(R.id.cartItemsList);
-        totalPrice = findViewById(R.id.totalPrice); // Initialization moved inside onCreate
+        totalPrice = findViewById(R.id.totalPrice);
         Button proceedToCheckout = findViewById(R.id.proceedToCheckout);
 
-        // Fetch the items from the Cart singleton
+        // Pobieramy przedmioty z singletonu Cart
         List<Item> cartItems = Cart.getInstance().getItems();
 
+        // Wyświetlamy z pomocą adaptera przedmioty dodane do koszyka
         itemsAdapter = new ArrayAdapter<>(
                 this,
                 android.R.layout.simple_list_item_1,
@@ -42,10 +43,11 @@ public class CartActivity extends AppCompatActivity {
 
         cartItemsList.setAdapter(itemsAdapter);
 
-        // Calculate total price and display
+        // Liczymy i wyświetlamy łączną wartość produktów w koszyku
         calculateTotal(cartItems);
         totalPrice.setText(String.format("Total: $%.2f", totalCartValue));
 
+        // Obsługa przycisku "Checkout"
         proceedToCheckout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -61,26 +63,27 @@ public class CartActivity extends AppCompatActivity {
         }
     }
 
+    // Funkcja obsługująca usuwanie produktów z koszyka z bazy danych
     private void checkoutCart() {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         List<Item> cartItems = Cart.getInstance().getItems();
         List<Item> itemsToRemove = new ArrayList<>();
 
         for (Item item : cartItems) {
-            String itemId = item.getItemId(); // Ensure you have the ID
+            String itemId = item.getItemId(); // Pobieramy Id produktu
 
             db.collection("items").document(itemId)
                     .delete()
                     .addOnSuccessListener(aVoid -> {
-                        // Add the item to the list of items to be removed
+                        // Dodajemy przedmiot do listy przedmiotów do usunięcia
                         itemsToRemove.add(item);
                         Log.d("CartActivity", "Item successfully deleted from database: " + itemId);
 
-                        // If all items have been processed, remove them from the cart
+                        // Jeśli wszystkie przedmioty zostały przeiterowane usuwamy je
                         if (itemsToRemove.size() == cartItems.size()) {
                             cartItems.removeAll(itemsToRemove);
-                            itemsAdapter.notifyDataSetChanged(); // Notify the adapter after changes
-                            totalPrice.setText("Total: $0.00"); // Update total price
+                            itemsAdapter.notifyDataSetChanged(); // Informujemy adapter o zmianach
+                            totalPrice.setText("Total: $0.00"); // Ustawiamy całkowitą wartość koszyka na 0
                             Toast.makeText(this, "Checkout Successful", Toast.LENGTH_SHORT).show();
                         }
                     })
@@ -89,7 +92,7 @@ public class CartActivity extends AppCompatActivity {
                     });
         }
 
-        // If there were no items to begin with, we should still reset the UI
+        // Jeśli w koszyku nie ma żadnych przedmiotów to odświeżamy UI
         if (cartItems.isEmpty()) {
             totalPrice.setText("Total: $0.00");
             Toast.makeText(this, "Checkout Successful", Toast.LENGTH_SHORT).show();

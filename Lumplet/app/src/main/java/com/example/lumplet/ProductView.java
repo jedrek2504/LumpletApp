@@ -19,7 +19,6 @@ public class ProductView extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.product_view);
 
-        // Find the addToCartButton and set an onClickListener
         Button addToCartButton = findViewById(R.id.addToCartButton);
 
         // Pobierz dane produktu z Intent
