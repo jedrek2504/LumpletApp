@@ -1,5 +1,6 @@
 package com.example.lumplet;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 
@@ -11,6 +12,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.text.SimpleDateFormat;
@@ -93,12 +96,60 @@ public class CheckoutActivity extends AppCompatActivity {
                 .addOnSuccessListener(documentReference -> {
                     // Zamówienie zostało pomyślnie dodane
                     String orderId = documentReference.getId();
+                    moveItemsToArchive(productIds);
                     Toast.makeText(CheckoutActivity.this, "Zamówienie o numerze: " + orderId + " zostało pomyślnie dodane.", Toast.LENGTH_SHORT).show();
+                    Intent mainIntent = new Intent(CheckoutActivity.this, MainActivity.class);
+                    startActivity(mainIntent);
+                    finish();
                 })
                 .addOnFailureListener(e -> {
                     Log.w("CheckoutActivity", "Błąd podczas dodawania zamówienia do bazy danych", e);
                     Toast.makeText(CheckoutActivity.this, "Wystąpił błąd podczas składania zamówienia.", Toast.LENGTH_SHORT).show();
                 });
     }
+
+    private void moveItemsToArchive(List<String> productIds) {
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+
+        for (String itemId : productIds) {
+            DocumentReference itemRef = db.collection("items").document(itemId);
+
+            itemRef.get().addOnCompleteListener(task -> {
+                if (task.isSuccessful()) {
+                    DocumentSnapshot document = task.getResult();
+
+                    if (document.exists()) {
+                        Map<String, Object> itemData = document.getData();
+
+                        // Dodaj produkt do kolekcji "archive"
+                        assert itemData != null;
+                        db.collection("itemsArchive")
+                                .document(itemId) // Użyj itemId jako ID dokumentu w kolekcji "archive"
+                                .set(itemData) // Ustaw dane produktu z "items" w "archive"
+                                .addOnSuccessListener(aVoid -> {
+                                    Log.d("CheckoutActivity", "Produkt o numerze " + itemId + " został dodany do archiwum.");
+                                })
+                                .addOnFailureListener(e -> {
+                                    Log.w("CheckoutActivity", "Błąd podczas dodawania produktu do archiwum", e);
+                                });
+                    } else {
+                        Log.d("CheckoutActivity", "Brak dokumentu produktu o numerze: " + itemId);
+                    }
+
+                    // Usuń produkt z kolekcji "items" (niezależnie od tego, czy istnieje)
+                    itemRef.delete()
+                            .addOnSuccessListener(aVoid -> {
+                                Log.d("CheckoutActivity", "Produkt o numerze " + itemId + " został usunięty z kolekcji 'items'.");
+                            })
+                            .addOnFailureListener(e -> {
+                                Log.w("CheckoutActivity", "Błąd podczas usuwania produktu z kolekcji 'items'", e);
+                            });
+                } else {
+                    Log.w("CheckoutActivity", "Błąd podczas pobierania dokumentu produktu", task.getException());
+                }
+            });
+        }
+    }
+
 
 }
