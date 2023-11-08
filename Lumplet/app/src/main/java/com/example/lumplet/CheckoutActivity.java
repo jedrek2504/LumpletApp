@@ -37,6 +37,8 @@ public class CheckoutActivity extends AppCompatActivity {
 
         totalCartValue = getIntent().getDoubleExtra("totalCartValue", 0.0);
 
+        ArrayList<Item> cartItems = getIntent().getParcelableArrayListExtra("cartItems");
+
         firstNameEditText = findViewById(R.id.firstNameEditText);
         lastNameEditText = findViewById(R.id.lastNameEditText);
         streetEditText = findViewById(R.id.streetEditText);
@@ -47,7 +49,7 @@ public class CheckoutActivity extends AppCompatActivity {
         confirmOrderButton.setOnClickListener(v -> {
             FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
             if (user != null) {
-                confirmOrder(user);
+                confirmOrder(user, cartItems);
             } else {
                 // Użytkownik nie jest zalogowany, możesz obsłużyć to tutaj
                 Toast.makeText(CheckoutActivity.this, "Użytkownik nie jest zalogowany. Zaloguj się, aby złożyć zamówienie.", Toast.LENGTH_LONG).show();
@@ -55,7 +57,7 @@ public class CheckoutActivity extends AppCompatActivity {
         });
     }
 
-    private void confirmOrder(FirebaseUser user) {
+    private void confirmOrder(FirebaseUser user, List<Item> cartItems) {
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.getDefault());
         String orderDate = dateFormat.format(new Date());
         String userId = user.getUid();
@@ -81,7 +83,11 @@ public class CheckoutActivity extends AppCompatActivity {
         shippingAddress.put("city", city);
         orderData.put("shippingAddress", shippingAddress);
 
-        // Tutaj dodaj identyfikatory produktów do zamówienia na podstawie wybranych produktów
+        List<String> productIds = new ArrayList<>();
+        for (Item item : cartItems) {
+            productIds.add(item.getItemId());
+        }
+        orderData.put("productIds", productIds);
 
         ((CollectionReference) ordersCollection).add(orderData)
                 .addOnSuccessListener(documentReference -> {
