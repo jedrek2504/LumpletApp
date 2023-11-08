@@ -1,0 +1,67 @@
+<!-- res/layout/activity_checkout.xml -->
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="16dp">
+
+    <TextView
+        android:id="@+id/checkoutTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:text="@string/dane_do_wysy_ki"
+        android:textSize="24sp"
+        android:layout_marginBottom="16dp" />
+
+    <EditText
+        android:id="@+id/firstNameEditText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/imie"
+        android:layout_below="@+id/checkoutTitle"
+        android:layout_marginTop="16dp" />
+
+    <EditText
+        android:id="@+id/lastNameEditText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/nazwisko"
+        android:layout_below="@+id/firstNameEditText"
+        android:layout_marginTop="16dp" />
+
+    <EditText
+        android:id="@+id/streetEditText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/ulica"
+        android:layout_below="@+id/lastNameEditText"
+        android:layout_marginTop="16dp"
+        />
+
+    <EditText
+        android:id="@+id/zipcodeEditText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/kod_pocztowy"
+        android:layout_below="@+id/streetEditText"
+        android:layout_marginTop="16dp"
+        />
+
+    <EditText
+        android:id="@+id/cityEditText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/miasto"
+        android:layout_below="@+id/zipcodeEditText"
+        android:layout_marginTop="16dp"
+        />
+
+    <Button
+        android:id="@+id/confirmOrderButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/zipcodeEditText"
+        android:layout_marginTop="95dp"
+        android:text="@string/potwierd_zam_wienie" />
+
+</RelativeLayout>
