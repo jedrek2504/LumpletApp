@@ -89,7 +89,7 @@ public class Authentication {
 
     // Interfejs do obsługi wyników operacji autentykacji
     public interface FirebaseAuthCompleteListener {
-        void onComplete(FirebaseUser user);       // Metoda wywoływana po pomyślnej operacji
+        void onComplete(FirebaseUser user);       //    Metoda wywoływana po pomyślnej operacji
         void onError(Exception exception);       // Metoda wywoływana w przypadku wystąpienia błędu
     }
 }
