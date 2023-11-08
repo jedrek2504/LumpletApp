@@ -1,5 +1,6 @@
 package com.example.lumplet;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -51,7 +52,14 @@ public class CartActivity extends AppCompatActivity {
         proceedToCheckout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                checkoutCart();
+                // checkoutCart();
+                Intent checkoutIntent = new Intent(CartActivity.this, CheckoutActivity.class);
+
+                // Przekazanie całkowitej wartości koszyka do CheckoutActivity
+                checkoutIntent.putExtra("totalCartValue", totalCartValue);
+
+                // Rozpoczęcie aktywności CheckoutActivity
+                startActivity(checkoutIntent);
             }
         });
     }

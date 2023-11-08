@@ -43,7 +43,7 @@ public class ProductView extends AppCompatActivity {
             // Wyświetl dane produktu w widoku
             nameTextView.setText(productName);
             descriptionTextView.setText(productDescription);
-            priceTextView.setText("Cena: " + productPrice + " PLN");
+            priceTextView.setText("Cena: $" + productPrice);
             categoryTextView.setText("Kategoria: " + productCategory);
             // Możesz również dodać kod do wyświetlenia zdjęcia, jeśli jest dostępne
 

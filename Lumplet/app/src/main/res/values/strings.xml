@@ -12,4 +12,12 @@
     <string name="description_icon_user">Login</string>
     <string name="google_login">Zaloguj przez Google</string>
     <string name="description_icon_cart">Koszyk</string>
+    <string name="imie">Imię</string>
+    <string name="nazwisko">Nazwisko</string>
+    <string name="adres">Adres</string>
+    <string name="potwierd_zam_wienie">Potwierdź zamówienie</string>
+    <string name="dane_do_wysy_ki">Dane do wysyłki</string>
+    <string name="miasto">Miasto</string>
+    <string name="kod_pocztowy">Kod pocztowy</string>
+    <string name="ulica">Ulica</string>
 </resources>

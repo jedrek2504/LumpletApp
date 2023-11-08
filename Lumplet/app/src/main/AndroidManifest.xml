@@ -38,6 +38,7 @@
 
         <!-- Dodaj deklarację aktywności CartActivity -->
         <activity android:name=".CartActivity" />
+        <activity android:name=".CheckoutActivity" />
     </application>
 
 </manifest>
