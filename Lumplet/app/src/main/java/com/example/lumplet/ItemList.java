@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.SeekBar;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -36,6 +37,26 @@ public class ItemList extends AppCompatActivity {
         kategoriaTextView = findViewById(R.id.kategoriaTextView);
         db = FirebaseFirestore.getInstance();
         listView = findViewById(R.id.listView);
+
+        SeekBar seekBarPrice = findViewById(R.id.seekBarPrice);
+        TextView seekBarValueText = findViewById(R.id.seekBarValueText); // Or whatever ID you choose
+
+        seekBarPrice.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                // Adjust the progress to the nearest step size (in this case, 100)
+                int stepSize = 100;
+                progress = (progress / stepSize) * stepSize;
+                seekBar.setProgress(progress);
+                seekBarValueText.setText(String.valueOf(progress));
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {}
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {}
+        });
 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
