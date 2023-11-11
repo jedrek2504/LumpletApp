@@ -90,7 +90,7 @@ public class ItemList extends AppCompatActivity {
                                     case "sneakers":
                                         snkrsList.add(item);
                                         break;
-                                    case "clothing":
+                                    case "cloth":
                                         clothesList.add(item);
                                         break;
                                     case "accessory":

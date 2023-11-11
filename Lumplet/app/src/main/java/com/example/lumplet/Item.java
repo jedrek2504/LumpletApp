@@ -1,8 +1,11 @@
 package com.example.lumplet;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import androidx.annotation.NonNull;
 
-public class Item {
+public class Item implements Parcelable {
     private String itemId;
     private String name;
     private double price;
@@ -25,6 +28,26 @@ public class Item {
         this.category = category;
         this.description = description;
     }
+
+    protected Item(Parcel in) {
+        itemId = in.readString();
+        name = in.readString();
+        price = in.readDouble();
+        category = in.readString();
+        description = in.readString();
+    }
+
+    public static final Creator<Item> CREATOR = new Creator<Item>() {
+        @Override
+        public Item createFromParcel(Parcel in) {
+            return new Item(in);
+        }
+
+        @Override
+        public Item[] newArray(int size) {
+            return new Item[size];
+        }
+    };
 
     public String getItemId() {
         return itemId;
@@ -70,5 +93,19 @@ public class Item {
     @Override
     public String toString() {
         return getName() + " - " + String.format("$%.2f", getPrice());
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(@NonNull Parcel dest, int flags) {
+        dest.writeString(itemId);
+        dest.writeString(name);
+        dest.writeDouble(price);
+        dest.writeString(category);
+        dest.writeString(description);
     }
 }

@@ -52,11 +52,11 @@ public class CartActivity extends AppCompatActivity {
         proceedToCheckout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                ArrayList<Item> cartItems = new ArrayList<>(Cart.getInstance().getItems());
                 // checkoutCart();
                 Intent checkoutIntent = new Intent(CartActivity.this, CheckoutActivity.class);
-
-                // Przekazanie całkowitej wartości koszyka do CheckoutActivity
                 checkoutIntent.putExtra("totalCartValue", totalCartValue);
+                checkoutIntent.putParcelableArrayListExtra("cartItems", cartItems);
 
                 // Rozpoczęcie aktywności CheckoutActivity
                 startActivity(checkoutIntent);
