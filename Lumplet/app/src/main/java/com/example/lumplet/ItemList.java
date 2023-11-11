@@ -1,22 +1,17 @@
 package com.example.lumplet;
 
-import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.SeekBar;
 import android.widget.TextView;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
-import com.google.firebase.firestore.QuerySnapshot;
-import android.content.Intent;
 
 import java.util.ArrayList;
 
@@ -37,23 +32,79 @@ public class ItemList extends AppCompatActivity {
         db = FirebaseFirestore.getInstance();
         listView = findViewById(R.id.listView);
 
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        SeekBar seekBarPrice = findViewById(R.id.seekBarPrice);
+        TextView seekBarValueText = findViewById(R.id.seekBarValueText);
+        Button filterButton = findViewById(R.id.filterNameBut);
+        EditText filterNameText = findViewById(R.id.filterNameText);
+
+
+        seekBarPrice.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                // Pobierz wybrany produkt z listy na podstawie pozycji
-                Item selectedItem = (Item) listView.getItemAtPosition(position);
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                // Ustawienie kroku wartości seekbar na 100
+                int stepSize = 100;
+                progress = (progress / stepSize) * stepSize;
+                seekBar.setProgress(progress);
 
-                // Przejdź do widoku produktu (ProductViewActivity)
-                Intent productViewIntent = new Intent(ItemList.this, ProductView.class);
-                productViewIntent.putExtra("itemID", selectedItem.getItemId());
-                productViewIntent.putExtra("productName", selectedItem.getName());
-                productViewIntent.putExtra("productDescription", selectedItem.getDescription());
-                productViewIntent.putExtra("productPrice", selectedItem.getPrice());
-                productViewIntent.putExtra("productCategory", selectedItem.getCategory());
-                // Tutaj możesz przekazać więcej informacji, takie jak zdjęcia, jeśli potrzebujesz
-
-                startActivity(productViewIntent);
+                // Ustawienie odpowiedniej wartości nad seekBar
+                seekBarValueText.setText(String.valueOf(progress));
             }
+
+            // Wymagane nadpisujące metody przez seekBar
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+            }
+        });
+
+        filterButton.setOnClickListener(v -> {
+            String filterName = filterNameText.getText().toString().toLowerCase();
+            double filterPrice = Double.parseDouble(seekBarValueText.getText().toString());
+
+            ArrayList<Item> filteredList = new ArrayList<>();
+            ArrayList<Item> targetList;
+
+            // Wybieramy odpowiednią liste w zależności od kategorii
+            String currentCategory = kategoriaTextView.getText().toString();
+            if (currentCategory.equalsIgnoreCase("Obuwie")) {
+                targetList = snkrsList;
+            } else if (currentCategory.equalsIgnoreCase("Ubrania")) {
+                targetList = clothesList;
+            } else if (currentCategory.equalsIgnoreCase("Akcesoria")) {
+                targetList = accessoriesList;
+            } else {
+                targetList = new ArrayList<>(); // Empty list if no category matches
+            }
+
+            // Filtrowanie listy zadanymi wartościami filterName i filterPrice
+            for (Item item : targetList) {
+                if (item.getName().toLowerCase().contains(filterName) && item.getPrice() <= filterPrice) {
+                    filteredList.add(item);
+                }
+            }
+
+            // Dodajemy to do adaptera i aktualizujemy liste
+            ProductAdapter adapter = new ProductAdapter(ItemList.this, filteredList);
+            listView.setAdapter(adapter);
+        });
+
+        listView.setOnItemClickListener((parent, view, position, id) -> {
+            // Pobierz wybrany produkt z listy na podstawie pozycji
+            Item selectedItem = (Item) listView.getItemAtPosition(position);
+
+            // Przejdź do widoku produktu (ProductViewActivity)
+            Intent productViewIntent = new Intent(ItemList.this, ProductView.class);
+            productViewIntent.putExtra("itemID", selectedItem.getItemId());
+            productViewIntent.putExtra("productName", selectedItem.getName());
+            productViewIntent.putExtra("productDescription", selectedItem.getDescription());
+            productViewIntent.putExtra("productPrice", selectedItem.getPrice());
+            productViewIntent.putExtra("productCategory", selectedItem.getCategory());
+            // Tutaj możesz przekazać więcej informacji, takie jak zdjęcia, jeśli potrzebujesz
+
+            startActivity(productViewIntent);
         });
 
         Bundle extras = getIntent().getExtras();
@@ -78,13 +129,13 @@ public class ItemList extends AppCompatActivity {
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
                         for (QueryDocumentSnapshot document : task.getResult()) {
-                            String id = document.getId(); // Capture the Firestore document ID
+                            String id = document.getId(); // Pobierz id generowane przez Firebase
                             String name = document.getString("name");
                             double price = document.getDouble("price");
                             String category = document.getString("category");
                             String description = document.getString("description");
 
-                            Item item = new Item(id, name, price, category, description); // Use the constructor that includes the ID
+                            Item item = new Item(id, name, price, category, description);
                             if (category != null) {
                                 switch (category) {
                                     case "sneakers":
@@ -100,7 +151,7 @@ public class ItemList extends AppCompatActivity {
                             }
                         }
 
-                        // Przekaz odpowiednią listę do adaptera i zaktualizuj ListView
+                        // Przekaż odpowiednią listę do adaptera i zaktualizuj ListView
                         String currentCategory = kategoriaTextView.getText().toString();
                         if (currentCategory.equalsIgnoreCase("Obuwie")) {
                             ProductAdapter adapter = new ProductAdapter(ItemList.this, snkrsList);
