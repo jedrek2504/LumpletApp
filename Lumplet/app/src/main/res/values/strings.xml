@@ -20,4 +20,9 @@
     <string name="miasto">Miasto</string>
     <string name="kod_pocztowy">Kod pocztowy</string>
     <string name="ulica">Ulica</string>
+    <string name="name">Name</string>
+    <string name="filter">Filter</string>
+    <string name="_5000">5000</string>
+    <string name="price">Price</string>
+    <string name="nazwa_kategorii">Nazwa Kategorii</string>
 </resources>

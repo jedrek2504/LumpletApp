@@ -7,10 +7,6 @@
     android:layout_height="match_parent"
     tools:context=".ItemList">
 
-    <!-- TextView na górze do wyświetlenia kategorii -->
-
-    <!-- ListView dla listy produktów -->
-
     <ListView
         android:id="@+id/listView"
         android:layout_width="0dp"
@@ -27,7 +23,7 @@
         android:layout_width="190dp"
         android:layout_height="30dp"
         android:layout_marginTop="100dp"
-        android:text="Nazwa Kategorii"
+        android:text="@string/nazwa_kategorii"
         android:textAlignment="center"
         android:textColor="#673AB7"
         android:textSize="18sp"
@@ -56,10 +52,11 @@
         android:layout_height="43dp"
         android:layout_marginTop="10dp"
         android:ems="10"
+        android:hint="@string/name"
         android:inputType="text"
-        android:hint="Name"
         android:text=""
         app:layout_constraintTop_toTopOf="parent"
+        tools:ignore="MissingConstraints"
         tools:layout_editor_absoluteX="19dp" />
 
     <Button
@@ -68,7 +65,7 @@
         android:layout_height="43dp"
         android:layout_marginStart="10dp"
         android:layout_marginTop="10dp"
-        android:text="Filter"
+        android:text="@string/filter"
         android:textSize="12sp"
         app:layout_constraintStart_toEndOf="@+id/filterNameText"
         app:layout_constraintTop_toTopOf="parent" />
@@ -77,21 +74,22 @@
         android:id="@+id/seekBarValueText"
         android:layout_width="30dp"
         android:layout_height="10dp"
-        android:text="5000"
+        android:text="@string/_5000"
         android:textAlignment="center"
         android:textSize="8sp"
         app:layout_constraintBottom_toTopOf="@+id/seekBarPrice"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/filterNameText"
-        app:layout_constraintVertical_bias="1.0" />
+        app:layout_constraintVertical_bias="1.0"
+        tools:ignore="SmallSp" />
 
     <TextView
         android:id="@+id/priceText"
         android:layout_width="46dp"
         android:layout_height="18dp"
         android:layout_marginBottom="10dp"
-        android:text="Price"
+        android:text="@string/price"
         android:textAlignment="center"
         app:layout_constraintBottom_toTopOf="@+id/kategoriaTextView"
         app:layout_constraintEnd_toStartOf="@+id/seekBarPrice"
