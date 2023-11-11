@@ -7,6 +7,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.SeekBar;
 import android.widget.TextView;
@@ -39,7 +41,10 @@ public class ItemList extends AppCompatActivity {
         listView = findViewById(R.id.listView);
 
         SeekBar seekBarPrice = findViewById(R.id.seekBarPrice);
-        TextView seekBarValueText = findViewById(R.id.seekBarValueText); // Or whatever ID you choose
+        TextView seekBarValueText = findViewById(R.id.seekBarValueText);
+        Button filterButton = findViewById(R.id.filterNameBut);
+        EditText filterNameText = findViewById(R.id.filterNameText);
+
 
         seekBarPrice.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
@@ -56,6 +61,40 @@ public class ItemList extends AppCompatActivity {
 
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {}
+        });
+
+        filterButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String filterName = filterNameText.getText().toString().toLowerCase();
+                double filterPrice = Double.parseDouble(seekBarValueText.getText().toString());
+
+                ArrayList<Item> filteredList = new ArrayList<>();
+                ArrayList<Item> targetList;
+
+                // Choose the correct list based on category
+                String currentCategory = kategoriaTextView.getText().toString();
+                if (currentCategory.equalsIgnoreCase("Obuwie")) {
+                    targetList = snkrsList;
+                } else if (currentCategory.equalsIgnoreCase("Ubrania")) {
+                    targetList = clothesList;
+                } else if (currentCategory.equalsIgnoreCase("Akcesoria")) {
+                    targetList = accessoriesList;
+                } else {
+                    targetList = new ArrayList<>(); // Empty list if no category matches
+                }
+
+                // Filter the list
+                for (Item item : targetList) {
+                    if (item.getName().toLowerCase().contains(filterName) && item.getPrice() <= filterPrice) {
+                        filteredList.add(item);
+                    }
+                }
+
+                // Update ListView
+                ProductAdapter adapter = new ProductAdapter(ItemList.this, filteredList);
+                listView.setAdapter(adapter);
+            }
         });
 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
