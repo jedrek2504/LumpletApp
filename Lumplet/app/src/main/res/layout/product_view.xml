@@ -18,7 +18,7 @@
     <ImageView
         android:id="@+id/productImageView"
         android:layout_width="match_parent"
-        android:layout_height="255dp"
+        android:layout_height="392dp"
         android:contentDescription="Product Image"
         android:scaleType="centerCrop" />
 
