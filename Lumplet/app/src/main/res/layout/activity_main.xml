@@ -9,8 +9,8 @@
 
     <ImageView
         android:id="@+id/mainLogo1"
-        android:layout_width="141dp"
-        android:layout_height="137dp"
+        android:layout_width="356dp"
+        android:layout_height="324dp"
         android:layout_marginTop="16dp"
         android:contentDescription="@string/logo_outletu_lumplet"
         app:layout_constraintEnd_toEndOf="parent"
