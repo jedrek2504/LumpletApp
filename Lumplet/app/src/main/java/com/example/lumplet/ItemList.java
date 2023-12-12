@@ -134,8 +134,9 @@ public class ItemList extends AppCompatActivity {
                             double price = document.getDouble("price");
                             String category = document.getString("category");
                             String description = document.getString("description");
+                            String imgUrl = document.getString("imgUrl");
 
-                            Item item = new Item(id, name, price, category, description);
+                            Item item = new Item(id, name, price, category, description, imgUrl);
                             if (category != null) {
                                 switch (category) {
                                     case "sneakers":

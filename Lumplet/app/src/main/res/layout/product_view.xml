@@ -23,8 +23,6 @@
         android:scaleType="centerCrop" />
 
 
-    <!-- TextView do wyświetlenia nazwy produktu -->
-
     <!-- TextView do wyświetlenia opisu produktu -->
     <TextView
         android:id="@+id/productDescriptionTextView"

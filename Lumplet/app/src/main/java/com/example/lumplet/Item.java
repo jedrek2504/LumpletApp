@@ -11,22 +11,25 @@ public class Item implements Parcelable {
     private double price;
     private String category;
     private String description;
+    private String imgUrl;
 
     // Konstruktor z ID
-    public Item(String itemId, String name, double price, String category, String description) {
+    public Item(String itemId, String name, double price, String category, String description, String imgUrl) {
         this.itemId = itemId;
         this.name = name;
         this.price = price;
         this.category = category;
         this.description = description;
+        this.imgUrl = imgUrl; // Dodanie imgUrl do konstruktora
     }
 
     // Konstruktor bez ID (Firestore generuje)
-    public Item(String name, double price, String category, String description) {
+    public Item(String name, double price, String category, String description, String imgUrl) {
         this.name = name;
         this.price = price;
         this.category = category;
         this.description = description;
+        this.imgUrl = imgUrl; // Dodanie imgUrl do konstruktora
     }
 
     protected Item(Parcel in) {
@@ -35,6 +38,7 @@ public class Item implements Parcelable {
         price = in.readDouble();
         category = in.readString();
         description = in.readString();
+        imgUrl = in.readString(); // Odczyt imgUrl z Parcel
     }
 
     public static final Creator<Item> CREATOR = new Creator<Item>() {
@@ -85,6 +89,9 @@ public class Item implements Parcelable {
         return description;
     }
 
+    public String getImgUrl() { return imgUrl; }
+    public void setImgUrl(String imgUrl) { this.imgUrl = imgUrl; }
+
     public void setDescription(String description) {
         this.description = description;
     }
@@ -107,5 +114,7 @@ public class Item implements Parcelable {
         dest.writeDouble(price);
         dest.writeString(category);
         dest.writeString(description);
+        dest.writeString(imgUrl); // Zapis imgUrl do Parcel
     }
+
 }

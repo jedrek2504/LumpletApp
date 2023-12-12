@@ -1,6 +1,7 @@
 package com.example.lumplet;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -30,8 +31,24 @@ public class ProductAdapter extends ArrayAdapter<Item> {
         TextView cenaTextView = convertView.findViewById(R.id.cenaTextView);
 
         if (item != null) {
-            nazwaTextView.setText(item.getName()); // Zaktualizowana metoda getName()
-            cenaTextView.setText(String.valueOf(item.getPrice())); // Zaktualizowana metoda getPrice()
+            nazwaTextView.setText(item.getName());
+            cenaTextView.setText(String.valueOf(item.getPrice()));
+
+            // Obsługa kliknięcia na element listy
+            convertView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    // Tworzenie Intent do ProductView
+                    Intent intent = new Intent(getContext(), ProductView.class);
+                    intent.putExtra("itemID", item.getItemId());
+                    intent.putExtra("productName", item.getName());
+                    intent.putExtra("productDescription", item.getDescription());
+                    intent.putExtra("productPrice", item.getPrice());
+                    intent.putExtra("productCategory", item.getCategory());
+                    intent.putExtra("imgUrl", item.getImgUrl());
+                    getContext().startActivity(intent);
+                }
+            });
         }
 
         return convertView;
