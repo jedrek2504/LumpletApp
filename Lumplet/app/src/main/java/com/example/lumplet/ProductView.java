@@ -75,7 +75,7 @@ public class ProductView extends AppCompatActivity {
                     .load(uri.toString())
                     .into(imageView);
         }).addOnFailureListener(exception -> {
-            // Obsługa błędów, np. obraz nie istnieje
+            // Obsługa błędów
             Toast.makeText(this, "Nie udało się załadować obrazu", Toast.LENGTH_SHORT).show();
         });
     }

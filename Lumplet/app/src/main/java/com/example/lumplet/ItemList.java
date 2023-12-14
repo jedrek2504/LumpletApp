@@ -102,7 +102,6 @@ public class ItemList extends AppCompatActivity {
             productViewIntent.putExtra("productDescription", selectedItem.getDescription());
             productViewIntent.putExtra("productPrice", selectedItem.getPrice());
             productViewIntent.putExtra("productCategory", selectedItem.getCategory());
-            // Tutaj możesz przekazać więcej informacji, takie jak zdjęcia, jeśli potrzebujesz
 
             startActivity(productViewIntent);
         });
