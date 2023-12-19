@@ -22,29 +22,30 @@
         android:id="@+id/kategoriaTextView"
         android:layout_width="190dp"
         android:layout_height="30dp"
-        android:layout_marginTop="100dp"
+        android:layout_marginTop="132dp"
         android:text="@string/nazwa_kategorii"
         android:textAlignment="center"
         android:textColor="#673AB7"
         android:textSize="18sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <SeekBar
         android:id="@+id/seekBarPrice"
-        android:layout_width="264dp"
-        android:layout_height="18dp"
+        android:layout_width="227dp"
+        android:layout_height="24dp"
         android:layout_marginBottom="10dp"
         android:max="5000"
         android:progress="5000"
         app:layout_constraintBottom_toTopOf="@+id/kategoriaTextView"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.496"
+        app:layout_constraintHorizontal_bias="0.445"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/filterNameText"
-        app:layout_constraintVertical_bias="1.0" />
+        app:layout_constraintVertical_bias="0.733" />
 
     <EditText
         android:id="@+id/filterNameText"
@@ -59,40 +60,53 @@
         tools:ignore="MissingConstraints"
         tools:layout_editor_absoluteX="19dp" />
 
+
     <Button
         android:id="@+id/filterNameBut"
         android:layout_width="86dp"
         android:layout_height="43dp"
-        android:layout_marginStart="10dp"
-        android:layout_marginTop="10dp"
+        android:layout_marginStart="28dp"
         android:text="@string/filter"
         android:textSize="12sp"
         app:layout_constraintStart_toEndOf="@+id/filterNameText"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="@+id/filterNameText" />
+
+    <Button
+        android:id="@+id/clearFilterButton"
+        android:layout_width="85dp"
+        android:layout_height="44dp"
+        android:layout_marginTop="52dp"
+        android:text="Clear"
+        app:layout_constraintEnd_toEndOf="@+id/filterNameBut"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="@+id/filterNameBut"
+        app:layout_constraintTop_toTopOf="@+id/filterNameBut" />
 
     <TextView
         android:id="@+id/seekBarValueText"
-        android:layout_width="30dp"
-        android:layout_height="10dp"
+        android:layout_width="67dp"
+        android:layout_height="26dp"
         android:text="@string/_5000"
         android:textAlignment="center"
-        android:textSize="8sp"
-        app:layout_constraintBottom_toTopOf="@+id/seekBarPrice"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toBottomOf="@+id/seekBarPrice"
+        app:layout_constraintEnd_toEndOf="@+id/seekBarPrice"
+        app:layout_constraintHorizontal_bias="0.506"
+        app:layout_constraintStart_toStartOf="@+id/seekBarPrice"
         app:layout_constraintTop_toBottomOf="@+id/filterNameText"
-        app:layout_constraintVertical_bias="1.0"
+        app:layout_constraintVertical_bias="0.096"
         tools:ignore="SmallSp" />
 
     <TextView
         android:id="@+id/priceText"
         android:layout_width="46dp"
-        android:layout_height="18dp"
-        android:layout_marginBottom="10dp"
+        android:layout_height="25dp"
         android:text="@string/price"
         android:textAlignment="center"
-        app:layout_constraintBottom_toTopOf="@+id/kategoriaTextView"
+        app:layout_constraintBottom_toBottomOf="@+id/seekBarPrice"
         app:layout_constraintEnd_toStartOf="@+id/seekBarPrice"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintHorizontal_bias="0.457"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/seekBarValueText" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

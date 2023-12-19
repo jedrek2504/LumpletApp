@@ -19,38 +19,47 @@ public class ItemList extends AppCompatActivity {
 
     private FirebaseFirestore db;
     private ListView listView;
-    TextView kategoriaTextView;
+    private TextView kategoriaTextView;
+    private EditText filterNameText;
+    private TextView seekBarValueText;
+    private SeekBar seekBarPrice;
+
     private final ArrayList<Item> snkrsList = new ArrayList<>();
     private final ArrayList<Item> clothesList = new ArrayList<>();
     private final ArrayList<Item> accessoriesList = new ArrayList<>();
+
+    // Pola do przechowywania stanu filtracji
+    private String lastFilterName = "";
+    private double lastFilterPrice = 5000; // Załóżmy, że to maksymalna wartość suwaka
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.item_list);
+
+
         kategoriaTextView = findViewById(R.id.kategoriaTextView);
-        db = FirebaseFirestore.getInstance();
-        listView = findViewById(R.id.listView);
-
-        SeekBar seekBarPrice = findViewById(R.id.seekBarPrice);
-        TextView seekBarValueText = findViewById(R.id.seekBarValueText);
+        filterNameText = findViewById(R.id.filterNameText);
+        seekBarPrice = findViewById(R.id.seekBarPrice);
+        seekBarValueText = findViewById(R.id.seekBarValueText);
         Button filterButton = findViewById(R.id.filterNameBut);
-        EditText filterNameText = findViewById(R.id.filterNameText);
+        listView = findViewById(R.id.listView);
+        db = FirebaseFirestore.getInstance();
 
+        Button clearFilterButton = findViewById(R.id.clearFilterButton);
+        clearFilterButton.setOnClickListener(v -> {
+            clearFilters();
+        });
 
         seekBarPrice.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                // Ustawienie kroku wartości seekbar na 100
                 int stepSize = 100;
                 progress = (progress / stepSize) * stepSize;
                 seekBar.setProgress(progress);
-
-                // Ustawienie odpowiedniej wartości nad seekBar
                 seekBarValueText.setText(String.valueOf(progress));
             }
 
-            // Wymagane nadpisujące metody przez seekBar
             @Override
             public void onStartTrackingTouch(SeekBar seekBar) {
             }
@@ -61,41 +70,13 @@ public class ItemList extends AppCompatActivity {
         });
 
         filterButton.setOnClickListener(v -> {
-            String filterName = filterNameText.getText().toString().toLowerCase();
-            double filterPrice = Double.parseDouble(seekBarValueText.getText().toString());
-
-            ArrayList<Item> filteredList = new ArrayList<>();
-            ArrayList<Item> targetList;
-
-            // Wybieramy odpowiednią liste w zależności od kategorii
-            String currentCategory = kategoriaTextView.getText().toString();
-            if (currentCategory.equalsIgnoreCase("Obuwie")) {
-                targetList = snkrsList;
-            } else if (currentCategory.equalsIgnoreCase("Ubrania")) {
-                targetList = clothesList;
-            } else if (currentCategory.equalsIgnoreCase("Akcesoria")) {
-                targetList = accessoriesList;
-            } else {
-                targetList = new ArrayList<>(); // Empty list if no category matches
-            }
-
-            // Filtrowanie listy zadanymi wartościami filterName i filterPrice
-            for (Item item : targetList) {
-                if (item.getName().toLowerCase().contains(filterName) && item.getPrice() <= filterPrice) {
-                    filteredList.add(item);
-                }
-            }
-
-            // Dodajemy to do adaptera i aktualizujemy liste
-            ProductAdapter adapter = new ProductAdapter(ItemList.this, filteredList);
-            listView.setAdapter(adapter);
+            lastFilterName = filterNameText.getText().toString();
+            lastFilterPrice = Double.parseDouble(seekBarValueText.getText().toString());
+            applyFilter();
         });
 
         listView.setOnItemClickListener((parent, view, position, id) -> {
-            // Pobierz wybrany produkt z listy na podstawie pozycji
             Item selectedItem = (Item) listView.getItemAtPosition(position);
-
-            // Przejdź do widoku produktu (ProductViewActivity)
             Intent productViewIntent = new Intent(ItemList.this, ProductView.class);
             productViewIntent.putExtra("itemID", selectedItem.getItemId());
             productViewIntent.putExtra("productName", selectedItem.getName());
@@ -109,16 +90,59 @@ public class ItemList extends AppCompatActivity {
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
             String kategoria = extras.getString("kategoria");
-            if (kategoria != null) {
-                kategoriaTextView.setText(kategoria);
+            kategoriaTextView.setText(kategoria != null ? kategoria : "");
+        }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        applyFilter();
+    }
+
+    private void applyFilter() {
+        ArrayList<Item> filteredList = new ArrayList<>();
+        ArrayList<Item> targetList = getCurrentCategoryList();
+
+        for (Item item : targetList) {
+            if (item.getName().toLowerCase().contains(lastFilterName.toLowerCase()) && item.getPrice() <= lastFilterPrice) {
+                filteredList.add(item);
             }
         }
+
+        ProductAdapter adapter = new ProductAdapter(ItemList.this, filteredList);
+        listView.setAdapter(adapter);
+    }
+
+    private ArrayList<Item> getCurrentCategoryList() {
+        String currentCategory = kategoriaTextView.getText().toString();
+        switch (currentCategory) {
+            case "Obuwie":
+                return snkrsList;
+            case "Ubrania":
+                return clothesList;
+            case "Akcesoria":
+                return accessoriesList;
+            default:
+                return new ArrayList<>();
+        }
+    }
+
+    private void clearFilters() {
+        lastFilterName = "";
+        lastFilterPrice = 5000;
+        filterNameText.setText("");
+        seekBarPrice.setProgress(5000);
+        applyFilter();
     }
 
     @Override
     protected void onStart() {
         super.onStart();
+        loadData();
+    }
 
+    private void loadData() {
         snkrsList.clear();
         clothesList.clear();
         accessoriesList.clear();
@@ -128,7 +152,7 @@ public class ItemList extends AppCompatActivity {
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
                         for (QueryDocumentSnapshot document : task.getResult()) {
-                            String id = document.getId(); // Pobierz id generowane przez Firebase
+                            String id = document.getId();
                             String name = document.getString("name");
                             double price = document.getDouble("price");
                             String category = document.getString("category");
@@ -150,21 +174,9 @@ public class ItemList extends AppCompatActivity {
                                 }
                             }
                         }
-
-                        // Przekaż odpowiednią listę do adaptera i zaktualizuj ListView
-                        String currentCategory = kategoriaTextView.getText().toString();
-                        if (currentCategory.equalsIgnoreCase("Obuwie")) {
-                            ProductAdapter adapter = new ProductAdapter(ItemList.this, snkrsList);
-                            listView.setAdapter(adapter);
-                        } else if (currentCategory.equalsIgnoreCase("Ubrania")) {
-                            ProductAdapter adapter = new ProductAdapter(ItemList.this, clothesList);
-                            listView.setAdapter(adapter);
-                        } else if (currentCategory.equalsIgnoreCase("Akcesoria")) {
-                            ProductAdapter adapter = new ProductAdapter(ItemList.this, accessoriesList);
-                            listView.setAdapter(adapter);
-                        }
+                        applyFilter(); // Zastosuj filtrację po załadowaniu danych
                     } else {
-                        throw new IllegalArgumentException("Błąd w przekazaniu listy");
+                        // Obsługa błędów...
                     }
                 });
     }
