@@ -23,4 +23,8 @@ public class Cart {
     public List<Item> getItems() {
         return items;
     }
+
+    public void removeItem(Item item) {
+        items.remove(item);
+    }
 }
