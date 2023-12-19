@@ -6,7 +6,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
+import com.bumptech.glide.Glide;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -29,12 +33,27 @@ public class ProductAdapter extends ArrayAdapter<Item> {
 
         TextView nazwaTextView = convertView.findViewById(R.id.nazwaTextView);
         TextView cenaTextView = convertView.findViewById(R.id.cenaTextView);
+        ImageView imageView = convertView.findViewById(R.id.obrazekImageView);
 
         if (item != null) {
             nazwaTextView.setText(item.getName());
             cenaTextView.setText(String.valueOf(item.getPrice()));
 
-            // Obsługa kliknięcia na element listy
+            if (item.getImgUrl() != null && !item.getImgUrl().isEmpty()) {
+                FirebaseStorage storage = FirebaseStorage.getInstance();
+                StorageReference storageRef = storage.getReferenceFromUrl(item.getImgUrl());
+
+                storageRef.getDownloadUrl().addOnSuccessListener(uri -> {
+                    Glide.with(getContext())
+                            .load(uri.toString())
+                            .into(imageView);
+                }).addOnFailureListener(exception -> {
+                    imageView.setVisibility(View.GONE);
+                });
+            } else {
+                imageView.setImageResource(R.drawable.lumpletlogo);
+            }
+
             convertView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -53,4 +72,5 @@ public class ProductAdapter extends ArrayAdapter<Item> {
 
         return convertView;
     }
+
 }
