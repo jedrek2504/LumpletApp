@@ -59,8 +59,12 @@ public class ProductView extends AppCompatActivity {
 
             addToCartButton.setOnClickListener(view -> {
                 if (currentItem != null) {
-                    Cart.getInstance().addItem(currentItem);
-                    Toast.makeText(ProductView.this, currentItem.getName() + " added to cart!", Toast.LENGTH_SHORT).show();
+                    boolean added = Cart.getInstance().addItem(currentItem);
+                    if (added) {
+                        Toast.makeText(ProductView.this, currentItem.getName() + " added to cart!", Toast.LENGTH_SHORT).show();
+                    } else {
+                        Toast.makeText(ProductView.this, currentItem.getName() + " is already in the cart!", Toast.LENGTH_SHORT).show();
+                    }
                 }
             });
         }

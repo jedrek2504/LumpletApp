@@ -16,9 +16,16 @@ public class Cart {
         return instance;
     }
 
-    public void addItem(Item item) {
+    public boolean addItem(Item item) {
+        for (Item existingItem : items) {
+            if (existingItem.getItemId().equals(item.getItemId())) {
+                return false;
+            }
+        }
         items.add(item);
+        return true;
     }
+
 
     public List<Item> getItems() {
         return items;

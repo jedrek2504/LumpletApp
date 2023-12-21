@@ -15,8 +15,8 @@ import java.util.List;
 
 public class CartActivity extends AppCompatActivity {
 
-    private double totalCartValue = 0.0; // Całkowita wartość koszyka
-    private CartAdapter itemsAdapter; // Zmiana na CartAdapter
+    private double totalCartValue = 0.0;
+    private CartAdapter itemsAdapter;
     private TextView totalPrice;
 
     @Override
@@ -47,7 +47,7 @@ public class CartActivity extends AppCompatActivity {
                     startActivity(checkoutIntent);
                 } else {
                     // Informuj użytkownika, że koszyk jest pusty
-                    Toast.makeText(CartActivity.this, "Your cart is empty", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(CartActivity.this, "Your cart is empty!", Toast.LENGTH_SHORT).show();
                 }
             }
         });
