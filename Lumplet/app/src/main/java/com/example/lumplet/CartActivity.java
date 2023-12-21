@@ -6,6 +6,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -29,25 +30,25 @@ public class CartActivity extends AppCompatActivity {
 
         List<Item> cartItems = Cart.getInstance().getItems();
 
-        // Używanie niestandardowego CartAdapter
-        itemsAdapter = new CartAdapter(
-                this,
-                cartItems
-        );
-
+        itemsAdapter = new CartAdapter(this, cartItems);
         cartItemsList.setAdapter(itemsAdapter);
-
         calculateTotal(cartItems);
         totalPrice.setText(String.format("Total: $%.2f", totalCartValue));
+
 
         proceedToCheckout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent checkoutIntent = new Intent(CartActivity.this, CheckoutActivity.class);
-                checkoutIntent.putExtra("totalCartValue", totalCartValue);
-                checkoutIntent.putParcelableArrayListExtra("cartItems", new ArrayList<>(cartItems));
-
-                startActivity(checkoutIntent);
+                if (!cartItems.isEmpty()) {
+                    // Tylko jeśli koszyk zawiera przedmioty
+                    Intent checkoutIntent = new Intent(CartActivity.this, CheckoutActivity.class);
+                    checkoutIntent.putExtra("totalCartValue", totalCartValue);
+                    checkoutIntent.putParcelableArrayListExtra("cartItems", new ArrayList<>(cartItems));
+                    startActivity(checkoutIntent);
+                } else {
+                    // Informuj użytkownika, że koszyk jest pusty
+                    Toast.makeText(CartActivity.this, "Your cart is empty", Toast.LENGTH_SHORT).show();
+                }
             }
         });
     }
