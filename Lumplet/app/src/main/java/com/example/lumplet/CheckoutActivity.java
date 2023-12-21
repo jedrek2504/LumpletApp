@@ -54,7 +54,6 @@ public class CheckoutActivity extends AppCompatActivity {
             if (user != null) {
                 confirmOrder(user, cartItems);
             } else {
-                // Użytkownik nie jest zalogowany, możesz obsłużyć to tutaj
                 Toast.makeText(CheckoutActivity.this, "Użytkownik nie jest zalogowany. Zaloguj się, aby złożyć zamówienie.", Toast.LENGTH_LONG).show();
             }
         });
@@ -136,7 +135,6 @@ public class CheckoutActivity extends AppCompatActivity {
                         Log.d("CheckoutActivity", "Brak dokumentu produktu o numerze: " + itemId);
                     }
 
-                    // Usuń produkt z kolekcji "items" (niezależnie od tego, czy istnieje)
                     itemRef.delete()
                             .addOnSuccessListener(aVoid -> {
                                 Log.d("CheckoutActivity", "Produkt o numerze " + itemId + " został usunięty z kolekcji 'items'.");
