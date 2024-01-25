@@ -37,3 +37,79 @@ To set up the Lumplet app, clone the repository and import it into Android Studi
 
 ## License
 Lumplet is released under the [MIT License](LICENSE). See the LICENSE file for more details.
+
+## Firebase:
+pola dokumentu kolekcji items:
+
+category: "accessory"
+(string)
+
+description: "A must-have item to enhance your style."
+(string)
+
+imgUrl: "gs://lumplet.appspot.com/items/accessories/w5.jpg"
+(string)
+
+name: "acc45 - Stylish Watch"
+(string)
+
+price: 3572.24
+(number)
+
+
+
+
+pola dokumentu kolekcji itemsArchive:
+
+category: "cloth"
+(string)
+
+description: "Perfect for any occasion, comfortable and stylish."
+(string)
+
+name: "clo42 - Formal Suit"
+(string)
+
+price: 526.95
+
+
+
+
+pola dokumentu kolekcji orders:
+
+firstName: "Michael"
+(string)
+
+lastName: "Scott"
+(string)
+
+orderDate: "2023-12-12T17:47:35"
+(string)
+
+productIds
+(array)
+
+    0: "qISDo3bOecYUqkHa7qM7"
+    (string)
+
+    1: "0VhZHzuQoeN0EHgmy65R"
+    (string)
+
+
+shippingAddress
+(map)
+
+    city: "Warszawa"
+    (string)
+
+    street: "al. Politechniki 14"
+    (string)
+
+    zipcode: "91-284"
+    (string)
+
+totalAmount: 1526.95
+(number)
+
+userId: "hbJ1HPrXyxSQwKG2mPGJx8maMex2"
+(string)
