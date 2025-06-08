@@ -97,5 +97,12 @@ public class MainActivity extends AppCompatActivity {
             Intent intent = new Intent(MainActivity.this, CartActivity.class);
             startActivity(intent);
         });
+
+        Button contactButton = findViewById(R.id.contactBut);
+        contactButton.setOnClickListener(view -> {
+            Intent intent = new Intent(MainActivity.this, ContactActivity.class);
+            startActivity(intent);
+        });
+
     }
 }
